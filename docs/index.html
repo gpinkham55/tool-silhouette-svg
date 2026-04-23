@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tool Silhouette → CNC SVG</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Tool Silhouette → CNC SVG</h1>
+    <p>Top-down backlit photo on a grid → scaled SVG outlines for CNC foam cutting. Runs 100% in your browser — photos never leave your device.</p>
+  </header>
+
+  <div id="loading">Loading OpenCV.js (~8 MB, first time only)…</div>
+
+  <main hidden id="ui">
+    <aside>
+      <fieldset>
+        <legend>Grid</legend>
+        <label>Width (in) <input type="number" id="gridW" value="17" step="0.5" /></label>
+        <label>Height (in) <input type="number" id="gridH" value="12" step="0.5" /></label>
+        <label>Warp resolution (px/mm) <input type="range" id="pxPerMm" min="2" max="6" step="0.5" value="3" /><output for="pxPerMm">3</output></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Segmentation</legend>
+        <label>Blur radius <input type="range" id="blur" min="1" max="31" step="2" value="5" /><output>5</output></label>
+        <label>Threshold offset <input type="range" id="thrOff" min="-60" max="60" step="1" value="0" /><output>0</output></label>
+        <label>Morph open (kills grid lines) <input type="range" id="morphOpen" min="0" max="25" step="1" value="7" /><output>7</output></label>
+        <label>Morph close (fills holes) <input type="range" id="morphClose" min="0" max="25" step="1" value="9" /><output>9</output></label>
+        <label class="row"><input type="checkbox" id="invert" checked /> Backlit (objects darker)</label>
+        <label class="row"><input type="checkbox" id="autoOrient" checked /> Auto-orient warp</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Filtering</legend>
+        <label>Min area (px²) <input type="range" id="minArea" min="50" max="20000" step="50" value="2000" /><output>2000</output></label>
+        <label>Edge margin (px) <input type="range" id="edgeMargin" min="0" max="100" step="1" value="15" /><output>15</output></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Preview</legend>
+        <label class="row"><input type="checkbox" id="showOriginal" checked /> Show original photo overlay</label>
+      </fieldset>
+
+      <button id="downloadBtn" disabled>Download SVG</button>
+    </aside>
+
+    <section>
+      <div class="drop">
+        <input type="file" id="file" accept="image/*" />
+        <p>or drop a photo here</p>
+      </div>
+
+      <div id="status"></div>
+
+      <div class="canvases">
+        <figure>
+          <figcaption>Warped + detected contours</figcaption>
+          <canvas id="overlay"></canvas>
+        </figure>
+        <figure>
+          <figcaption>Binary mask</figcaption>
+          <canvas id="binary"></canvas>
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a href="https://github.com/">Source on GitHub</a>
+  </footer>
+
+  <script>
+    // Signal OpenCV.js is ready
+    var Module = { onRuntimeInitialized() { window.dispatchEvent(new Event('opencv-ready')); } };
+  </script>
+  <script async src="https://docs.opencv.org/4.10.0/opencv.js"></script>
+  <script src="app.js" type="module"></script>
+</body>
+</html>
