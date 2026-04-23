@@ -9,7 +9,7 @@ import numpy as np
 
 @dataclass
 class SegmentParams:
-    grid_w_mm: float = 457.2   # 18"
+    grid_w_mm: float = 431.8   # 17"
     grid_h_mm: float = 304.8   # 12"
     px_per_mm: float = 4.0     # warp resolution (1828 x 1219 at 4 px/mm)
     blur_radius: int = 5       # gaussian kernel (odd)

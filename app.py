@@ -17,7 +17,7 @@ st.caption("Top-down backlit photo on 18\" × 12\" grid → scaled SVG outlines 
 
 with st.sidebar:
     st.header("Grid")
-    w_in = st.number_input("Grid width (in)", value=18.0, step=0.5)
+    w_in = st.number_input("Grid width (in)", value=17.0, step=0.5)
     h_in = st.number_input("Grid height (in)", value=12.0, step=0.5)
     px_per_mm = st.slider("Warp resolution (px/mm)", 2.0, 8.0, 4.0, 0.5)
 

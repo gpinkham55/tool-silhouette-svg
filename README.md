@@ -1,6 +1,6 @@
 # Tool Silhouette → CNC SVG
 
-Convert a top-down backlit photo of tools laid on an 18" × 12" grid into a scaled SVG of object outlines, ready for CNC foam cutting.
+Convert a top-down backlit photo of tools laid on a 17" × 12" grid into a scaled SVG of object outlines, ready for CNC foam cutting.
 
 ## Features
 
@@ -53,7 +53,7 @@ requirements.txt
 
 ## Grid size
 
-Defaults to 18" × 12" (457.2 × 304.8 mm). Change in the sidebar for other grids.
+Defaults to 17" × 12" (431.8 × 304.8 mm). Change in the sidebar for other grids.
 
 ## License
 
