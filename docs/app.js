@@ -11,6 +11,7 @@ const els = {
   overlay: $('overlay'),
   binary: $('binary'),
   download: $('downloadBtn'),
+  downloadJpg: $('downloadJpgBtn'),
   showOriginal: $('showOriginal'),
   gridW: $('gridW'),
   gridH: $('gridH'),
@@ -76,6 +77,26 @@ els.download.addEventListener('click', () => {
   a.download = 'tool_outlines.svg';
   a.click();
   URL.revokeObjectURL(a.href);
+});
+
+els.downloadJpg.addEventListener('click', () => {
+  // JPG of the overlay canvas. JPEG has no alpha -> flatten onto white first.
+  const src = els.overlay;
+  if (!src.width || !src.height) return;
+  const flat = document.createElement('canvas');
+  flat.width = src.width;
+  flat.height = src.height;
+  const ctx = flat.getContext('2d');
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, flat.width, flat.height);
+  ctx.drawImage(src, 0, 0);
+  flat.toBlob((blob) => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'tool_outlines.jpg';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }, 'image/jpeg', 0.92);
 });
 
 function odd(n) { n = n | 0; return Math.max(1, n % 2 === 0 ? n + 1 : n); }
@@ -239,6 +260,7 @@ function process() {
 
   lastSvg = buildSvg(kept, outW, outH, p.gridW_mm, p.gridH_mm);
   els.download.disabled = kept.length === 0;
+  els.downloadJpg.disabled = false;
   setStatus(`${kept.length} object(s) kept. ${borderFound ? 'Border auto-detected.' : 'Border NOT detected — using full frame.'}`);
 
   // Cleanup

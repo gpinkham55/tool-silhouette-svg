@@ -85,13 +85,24 @@ svg_text = contours_to_svg(
     params.grid_h_mm,
 )
 
-st.download_button(
-    "Download SVG",
-    data=svg_text.encode("utf-8"),
-    file_name="tool_outlines.svg",
-    mime="image/svg+xml",
-    disabled=len(result.contours) == 0,
-)
+dl_col1, dl_col2 = st.columns(2)
+with dl_col1:
+    st.download_button(
+        "Download SVG",
+        data=svg_text.encode("utf-8"),
+        file_name="tool_outlines.svg",
+        mime="image/svg+xml",
+        disabled=len(result.contours) == 0,
+    )
+with dl_col2:
+    jpg_ok, jpg_buf = cv2.imencode(".jpg", overlay, [int(cv2.IMWRITE_JPEG_QUALITY), 92])
+    st.download_button(
+        "Download JPG (preview)",
+        data=jpg_buf.tobytes() if jpg_ok else b"",
+        file_name="tool_outlines.jpg",
+        mime="image/jpeg",
+        disabled=not jpg_ok,
+    )
 
 with st.expander("SVG preview (raw text)"):
     st.code(svg_text[:2000] + ("\n..." if len(svg_text) > 2000 else ""), language="xml")
